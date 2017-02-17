@@ -2,6 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+using System.Web.Mvc;
+using GigHub.Controllers;
+using Microsoft.Ajax.Utilities;
 
 namespace GigHub.ViewModels
 {
@@ -27,7 +31,16 @@ namespace GigHub.ViewModels
 
         public string Action
         {
-            get { return Id != 0 ? "Update" : "Create"; }
+            get
+            {
+                Expression<Func<GigsController, ActionResult>> update =
+                    c => c.Update(this);
+                Expression<Func<GigsController, ActionResult>> create =
+                    c => c.Create(this);
+                var action = Id != 0 ? update : create;
+
+                return (action.Body as MethodCallExpression).Method.Name;
+            }
         }
 
         public DateTime GetDateTime()
