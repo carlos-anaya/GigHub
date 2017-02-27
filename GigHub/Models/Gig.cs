@@ -17,16 +17,16 @@ namespace GigHub.Models
         [Required]
         public string ArtistId { get; set; }
 
-        public DateTime DateTime { get; private set; }
+        public DateTime DateTime { get; set; }
 
         [Required]
         [StringLength(255)]
-        public string Venue { get; private set; }
+        public string Venue { get; set; }
 
         public Genre Genre { get; set; }
 
         [Required]
-        public byte GenreId { get; private set; }
+        public byte GenreId { get; set; }
 
         public ICollection<Attendance> Attendances { get; private set; }
 
@@ -35,25 +35,23 @@ namespace GigHub.Models
             Attendances = new Collection<Attendance>();
         }
 
-        public void Cancel()
+        public void Modify(DateTime dateTime, byte genreId, string venue)
         {
-            IsCanceled = true;
+            var notification = Notification.GigUpdated(this, DateTime, Venue);
 
-            var notification = new Notification(NotificationType.GigCanceled, this);
+            DateTime = dateTime;
+            GenreId = genreId;
+            Venue = venue;
 
             foreach (var attendee in Attendances.Select(a => a.Attendee))
                 attendee.Notify(notification);
         }
 
-        public void Modify(DateTime dateTime, byte genreId, string venue)
+        public void Cancel()
         {
-            var notification = new Notification(NotificationType.GigUpdated, this);
-            notification.OriginalDatetime = DateTime;
-            notification.OriginalVenue = Venue;
+            IsCanceled = true;
 
-            DateTime = dateTime;
-            GenreId = genreId;
-            Venue = venue;
+            var notification = Notification.GigCanceled(this);
 
             foreach (var attendee in Attendances.Select(a => a.Attendee))
                 attendee.Notify(notification);
