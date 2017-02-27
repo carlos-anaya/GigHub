@@ -65,27 +65,6 @@ namespace GigHub.Controllers
         }
 
         [Authorize]
-        public ActionResult Edit(int id)
-        {
-            var userId = User.Identity.GetUserId();
-            var gig = _context.Gigs
-                .Single(g => g.Id == id && g.ArtistId == userId);
-
-            var viewModel = new GigFormViewModel
-            {
-                Id = gig.Id,
-                Heading = "Edit a Gig",
-                Genres = _context.Genres.ToList(),
-                Date = gig.DateTime.ToString("d MMM yyyy"),
-                Time = gig.DateTime.ToString("HH:mm"),
-                Genre = gig.GenreId,
-                Venue = gig.Venue
-            };
-
-            return View("GigForm", viewModel);
-        }
-
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(GigFormViewModel viewModel)
@@ -111,6 +90,27 @@ namespace GigHub.Controllers
         }
 
         [Authorize]
+        public ActionResult Edit(int id)
+        {
+            var userId = User.Identity.GetUserId();
+            var gig = _context.Gigs
+                .Single(g => g.Id == id && g.ArtistId == userId);
+
+            var viewModel = new GigFormViewModel
+            {
+                Id = gig.Id,
+                Heading = "Edit a Gig",
+                Genres = _context.Genres.ToList(),
+                Date = gig.DateTime.ToString("d MMM yyyy"),
+                Time = gig.DateTime.ToString("HH:mm"),
+                Genre = gig.GenreId,
+                Venue = gig.Venue
+            };
+
+            return View("GigForm", viewModel);
+        }
+
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Update(GigFormViewModel viewModel)
@@ -122,10 +122,11 @@ namespace GigHub.Controllers
             }
 
             var userId = User.Identity.GetUserId();
-            var gig = _context.Gigs.Single(g => g.Id == viewModel.Id && g.ArtistId == userId);
-            gig.DateTime = viewModel.GetDateTime();
-            gig.GenreId = viewModel.Genre;
-            gig.Venue = viewModel.Venue;
+            var gig = _context.Gigs
+                .Include(g => g.Attendances.Select(a => a.Attendee))
+                .Single(g => g.Id == viewModel.Id && g.ArtistId == userId);
+
+            gig.Modify(viewModel.GetDateTime(), viewModel.Genre, viewModel.Venue);
 
             _context.SaveChanges();
 
