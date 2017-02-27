@@ -6,12 +6,26 @@ namespace GigHub.Models
     public class Notification
     {
         public int Id { get; set; }
-        public DateTime DateTime { get; set; }
-        public NotificationType Type { get; set; }
+        public DateTime DateTime { get; private set; }
+        public NotificationType Type { get; private set; }
         public string OriginalVenue { get; set; }
         public DateTime? OriginalDatetime { get; set; }
 
         [Required]
-        public Gig Gig { get; set; }
+        public Gig Gig { get; private set; }
+
+        protected Notification()
+        {
+        }
+
+        public Notification(NotificationType type, Gig gig)
+        {
+            if (gig == null)
+                throw new ArgumentNullException("gig");
+
+            Type = type;
+            Gig = gig;
+            DateTime = DateTime.Now;
+        }
     }
 }
