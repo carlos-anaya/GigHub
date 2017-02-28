@@ -7,7 +7,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 
-
 namespace GigHub.Controllers.api
 {
     [Authorize]
@@ -25,22 +24,12 @@ namespace GigHub.Controllers.api
             var userId = User.Identity.GetUserId();
 
             var notifications = _context.UserNotifications
-                .Where(un => un.UserId == userId)
+                .Where(un => un.UserId == userId && un.IsRead == false)
                 .Select(un => un.Notification)
                 .Include(n => n.Gig.Artist)
                 .ToList();
 
-            //Mapper.Initialize(cfg =>
-            //{
-            //    cfg.CreateMap<ApplicationUser, UserDto>();
-            //    cfg.CreateMap<Genre, GenreDto>();
-            //    cfg.CreateMap<Gig, GigDto>();
-            //    cfg.CreateMap<Notification, NotificationDto>();
-            //});
-
-            var notificationDtos = notifications.Select(Mapper.Map<Notification, NotificationDto>);
-
-            return notificationDtos;
+            return notifications.Select(Mapper.Map<Notification, NotificationDto>);
         }
     }
 }
