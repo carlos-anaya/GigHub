@@ -1,8 +1,8 @@
-﻿using GigHub.Models;
-using Microsoft.AspNet.Identity;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
+using GigHub.Models;
+using Microsoft.AspNet.Identity;
 
 namespace GigHub.Controllers.api
 {
@@ -21,7 +21,7 @@ namespace GigHub.Controllers.api
         {
             var userId = User.Identity.GetUserId();
             var gig = _context.Gigs
-                .Include(g => g.Attendances.Select(a => a.Attendee))
+                .Include(g => Enumerable.Select<Attendance, ApplicationUser>(g.Attendances, a => a.Attendee))
                 .Single(g => g.Id == id && g.ArtistId == userId);
 
             if (gig.IsCanceled)
