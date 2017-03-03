@@ -1,5 +1,5 @@
-using System;
 using GigHub.Models;
+using System;
 
 namespace GigHub.Dtos
 {
@@ -8,7 +8,7 @@ namespace GigHub.Dtos
         public DateTime DateTime { get; set; }
         public NotificationType Type { get; set; }
         public string OriginalVenue { get; set; }
-        public DateTime? OriginalDatetime { get; set; }
+        public DateTime? OriginalDateTime { get; set; }
         public GigDto Gig { get; set; }
     }
 }
