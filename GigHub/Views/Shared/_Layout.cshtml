@@ -39,41 +39,44 @@
     @Scripts.Render("~/bundles/lib")
     @RenderSection("scripts", required: false)
 
-    <script type="text/js-template" id="notifications-template">
-        <ul class="notifications">
-            <%
-            _.each(notifications, function(notification){
-            if(notification.type == 1){
-            %>
-            <li><span class="highlight"><%= notification.gig.artist.name %></span> has canceled the gig at venue <%= notification.gig.venue %> at <%= notification.gig.dateTime %>.</li>
-            <%
-            }
-            if(notification.type == 2){
-            var changes = [],
-            originalValues = [],
-            newValues = [];
+<script type="text/js-template" id="notifications-template">
+    <ul class="notifications">
+        <%
+        _.each(notifications, function(notification){
+        if(notification.type == 1){
+        %>
+        <li>
+            <span class="highlight"><%= notification.gig.artist.name %></span> has canceled the gig at venue <%= notification.gig.venue %>
+            at <%= moment(notification.gig.dateTime).format("D MMM HH:mm") %>.
+        </li>
+        <%
+        }
+        if(notification.type == 2){
+        var changes = [],
+        originalValues = [],
+        newValues = [];
 
 
-            if(notification.originalVenue != notification.gig.venue) {
-            changes.push('venue');
-            originalValues.push(notification.originalVenue);
-            newValues.push(notification.gig.venue);
-            }
-            if(notification.originalDateTime != notification.gig.dateTime) {
-            changes.push('date/time');
-            originalValues.push(notification.originalDateTime);
-            newValues.push(notification.gig.dateTime);
-            }
-            %>
-            <li>
-                <span class="highlight"><%= notification.gig.artist.name %></span> has changed the <%= changes.join(' and ') %>
-                of the gig from <%= originalValues.join('/') %> to <%= newValues.join('/') %>
-            </li>
-            <%
-            }
-            })
-            %>
-        </ul>
+        if(notification.originalVenue != notification.gig.venue) {
+        changes.push('venue');
+        originalValues.push(notification.originalVenue);
+        newValues.push(notification.gig.venue);
+        }
+        if(notification.originalDateTime != notification.gig.dateTime) {
+        changes.push('date/time');
+        originalValues.push(moment(notification.originalDateTime).format("D MMM HH:mm"));
+        newValues.push(moment(notification.gig.dateTime).format("D MMM HH:mm"));
+        }
+        %>
+        <li>
+            <span class="highlight"><%= notification.gig.artist.name %></span> has changed the <%= changes.join(' and ') %>
+            of the gig from <%= originalValues.join('/') %> to <%= newValues.join('/') %>
+        </li>
+        <%
+        }
+        })
+        %>
+    </ul>
     </script>
 
     <script>
