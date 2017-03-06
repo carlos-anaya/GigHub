@@ -81,6 +81,10 @@ span.field-validation-error {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
+.form-control {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
 .navbar-brand {
   font-weight: 700;
 }
@@ -174,4 +178,7 @@ h6,
 }
 .popover-notifications ul.notifications > li:last-child {
   border-bottom: none;
+}
+#searchGigs {
+  width: 280px;
 }
