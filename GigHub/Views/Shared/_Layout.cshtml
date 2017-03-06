@@ -40,12 +40,12 @@
     @RenderSection("scripts", required: false)
 
     <script type="text/js-template" id="notifications-template">
-        <ul>
+        <ul class="notifications">
             <%
             _.each(notifications, function(notification){
             if(notification.type == 1){
             %>
-            <li><%= notification.gig.artist.name %> has canceled the <%= notification.gig.venue %> at venue at <%= notification.gig.dateTime %>.</li>
+            <li><span class="highlight"><%= notification.gig.artist.name %></span> has canceled the gig at venue <%= notification.gig.venue %> at <%= notification.gig.dateTime %>.</li>
             <%
             }
             if(notification.type == 2){
@@ -66,7 +66,7 @@
             }
             %>
             <li>
-                <%= notification.gig.artist.name %> has changed the <%= changes.join(' and ') %>
+                <span class="highlight"><%= notification.gig.artist.name %></span> has changed the <%= changes.join(' and ') %>
                 of the gig from <%= originalValues.join('/') %> to <%= newValues.join('/') %>
             </li>
             <%
@@ -79,6 +79,9 @@
     <script>
         $(document).ready(function () {
             $.getJSON("/api/notifications", function (notifications) {
+                if (notifications.length === 0)
+                    return;
+
                 $(".js-notifications-count")
                     .text(notifications.length)
                     .removeClass("hide")
@@ -92,7 +95,8 @@
                         var compiled = _.template($("#notifications-template").html());
 
                         return compiled({ notifications: notifications });
-                    }
+                    },
+                    template: '<div class="popover popover-notifications" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
                 });
             });
         });
