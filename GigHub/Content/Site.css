@@ -155,6 +155,9 @@ h6,
 .gigs > li .details .genre {
   font-size: 15px;
 }
+.gigs > li .details span {
+  padding: 0 10px;
+}
 .gigs > li .actions {
   display: none;
   font-size: 15px;

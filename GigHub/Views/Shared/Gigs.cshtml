@@ -47,7 +47,9 @@
                 </span>
                 @if (Model.ShowActions && !gig.IsCanceled)
                 {
-                    <button data-gig-id="@gig.Id" class="btn btn-default btn-sm pull-right js-toggle-attendance">Going?</button>
+                    var btnClass = Model.Attendances.Contains(gig.Id) ? "btn-info" : "btn-default";
+                    var btnText = Model.Attendances.Contains(gig.Id) ? "Going!" : "Going?";
+                    <button data-gig-id="@gig.Id" class="btn @(btnClass) btn-sm pull-right js-toggle-attendance">@(btnText)</button>
                 }
             </div>
         </li>
@@ -59,16 +61,33 @@
         $(document).ready(function () {
             $(".js-toggle-attendance").click(function (e) {
                 var button = $(e.target);
-                $.post("/api/attendances", { gigId: button.attr("data-gig-id") })
+
+                if (button.hasClass("btn-default")) {
+                    $.post("/api/attendances", { gigId: button.attr("data-gig-id") })
+                        .done(function () {
+                            button
+                                .removeClass("btn-default")
+                                .addClass("btn-info")
+                                .text("Going!");
+                        })
+                        .fail(function () {
+                            alert("Something failed!");
+                        });
+                } else {
+                    $.ajax({
+                        url: "/api/attendances/" + button.attr("data-gig-id"),
+                        method: "DELETE"
+                    })
                     .done(function () {
                         button
-                            .removeClass("btn-default")
-                            .addClass("btn-info")
-                            .text("Going");
+                            .removeClass("btn-info")
+                            .addClass("btn-default")
+                            .text("Going?");
                     })
                     .fail(function () {
                         alert("Something failed!");
                     });
+                }
             });
 
             $(".js-toggle-follow").click(function (e) {
