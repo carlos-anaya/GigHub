@@ -2,9 +2,14 @@
 
     var button;
 
-    var init = function () {
-        $(".js-toggle-attendance").click(toggleAttendance);
-    }
+    var init = function (container) {
+        // This will create a function instance for each .js-toggle-attendance element
+        // Moreover, if new elements are added they will not have a function instance
+
+        // $(".js-toggle-attendance").click(toggleAttendance);
+
+        $(container).on("click", ".js-toggle-attendance", toggleAttendance);
+    };
 
     var toggleAttendance = function (e) {
         button = $(e.target);
@@ -17,7 +22,7 @@
     };
 
     var done = function () {
-        var text = (button.text() === "Going?") ? "Going!" : "Going?";
+        var text = button.text() === "Going?" ? "Going!" : "Going?";
         button.toggleClass("btn-info").toggleClass("btn-default").text(text);
     };
 
@@ -27,6 +32,6 @@
 
     return {
         init: init
-    }
+    };
 
 }(AttendanceService);
