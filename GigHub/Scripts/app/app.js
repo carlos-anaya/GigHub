@@ -1,4 +1,15 @@
-﻿function initGigs() {
+﻿var GigsController = function () {
+
+    var init = function () {
+
+    }
+
+    return {
+        init: init
+    }
+}();
+
+function initGigs() {
     $(".js-toggle-attendance").click(function (e) {
         var button = $(e.target);
 
