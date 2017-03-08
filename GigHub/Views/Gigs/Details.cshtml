@@ -4,19 +4,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>
+<h2 id="artist">
     @Model.Gig.Artist.Name
 
     @if (User.Identity.IsAuthenticated)
     {
-        if (Model.IsFollowing)
-        {
-            <button class="btn btn-info">Following</button>
-        }
-        else
-        {
-            <button class="btn btn-default">Follow</button>
-        }
+        var btnClass = Model.IsFollowing ? "btn-warning" : "btn-info";
+        var btnText = Model.IsFollowing ? "Unfollow" : "Follow!";
+        <button data-followee-id="@Model.Gig.ArtistId" class="btn @(btnClass) js-toggle-following">@(btnText)</button>
     }
 </h2>
 Performing at @Model.Gig.Venue on @Model.Gig.DateTime.ToString("dd MMM yyyy") at @Model.Gig.DateTime.ToString("HH:mm")
@@ -24,4 +19,13 @@ Performing at @Model.Gig.Venue on @Model.Gig.DateTime.ToString("dd MMM yyyy") at
 @if (User.Identity.IsAuthenticated && Model.IsGoing)
 {
     <p>You are going to this event!</p>
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            GigDetailsController.init("#artist");
+        });
+    </script>
 }

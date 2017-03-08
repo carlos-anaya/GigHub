@@ -35,12 +35,7 @@
                     @if (gig.IsCanceled)
                     {
                         <span class="label label-warning">Canceled</span>
-                    }
-
-                    @if (Model.ShowActions)
-                    {
-                        <button class="btn btn-link btn-sm js-toggle-follow" data-user-id="@gig.ArtistId">Follow</button>
-                    }
+                    }                    
                 </span>
                 <span class="genre">
                     @gig.Genre.Name
@@ -49,7 +44,7 @@
                 {
                     var btnClass = Model.Attendances.Contains(gig.Id) ? "btn-info" : "btn-default";
                     var btnText = Model.Attendances.Contains(gig.Id) ? "Going!" : "Going?";
-                    <button data-gig-id="@gig.Id" class="btn @(btnClass) btn-sm pull-right js-toggle-attendance">@(btnText)</button>
+                    <button data-gig-id="@gig.Id" class="btn @(btnClass) btn-sm js-toggle-attendance">@(btnText)</button>
                 }
             </div>
         </li>
@@ -59,19 +54,7 @@
 {
     <script>
         $(document).ready(function () {
-
-            GigsController.init("#gigs");
-
-            $(".js-toggle-follow").click(function (e) {
-                var button = $(e.target);
-                $.post("/api/followings", { followeeId: button.attr("data-user-id") })
-                    .done(function () {
-                        button.text("Following");
-                    })
-                    .fail(function () {
-                        alert("Something failed");
-                    });
-            });
+            GigsController.init("#gigs");            
         });
     </script>
 }
