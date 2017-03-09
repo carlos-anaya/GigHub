@@ -1,5 +1,4 @@
 ﻿using GigHub.Core;
-using GigHub.Core.Models;
 using GigHub.Core.Repositories;
 using GigHub.Persistence.Repositories;
 
@@ -9,14 +8,16 @@ namespace GigHub.Persistence
     {
         private readonly ApplicationDbContext _context;
 
-        public IAttendanceRepository Attendances { get; private set; }
-        public IFollowingRepository Followings { get; private set; }
-        public IGigRepository Gigs { get; private set; }
-        public IGenreRepository Genres { get; private set; }
+        public IApplicationUserRepository ApplicationUsers { get; }
+        public IAttendanceRepository Attendances { get; }
+        public IFollowingRepository Followings { get; }
+        public IGigRepository Gigs { get; }
+        public IGenreRepository Genres { get; }
 
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
+            ApplicationUsers = new ApplicationUserRepository(context);
             Attendances = new AttendanceRepository(context);
             Followings = new FollowingRepository(context);
             Gigs = new GigRepository(context);
@@ -27,5 +28,6 @@ namespace GigHub.Persistence
         {
             _context.SaveChanges();
         }
+
     }
 }
