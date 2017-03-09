@@ -16,8 +16,21 @@ namespace GigHub.Repositories
         public IEnumerable<Attendance> GetFutureAttendances(string userId)
         {
             return _context.Attendances
-                            .Where(a => a.AttendeeId == userId && a.Gig.DateTime > DateTime.Now)
-                            .ToList();
+                .Where(a => a.AttendeeId == userId
+                    && a.Gig.DateTime > DateTime.Now)
+                .ToList();
+        }
+
+        public Attendance GetAttendance(int gigId, string userId)
+        {
+            return _context.Attendances
+                .SingleOrDefault(a => a.GigId == gigId
+                    && a.AttendeeId == userId);
+        }
+
+        public bool IsAttending(int gigId, string userId)
+        {
+            return GetAttendance(gigId, userId) != null;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using GigHub.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -22,6 +23,41 @@ namespace GigHub.Repositories
                             .Include(g => g.Artist)
                             .Include(g => g.Genre)
                             .ToList();
+        }
+
+        public Gig GetGigWithAttendees(int gigId)
+        {
+            return _context.Gigs
+                .Include(g => g.Attendances.Select(a => a.Attendee))
+                .SingleOrDefault(g => g.Id == gigId);
+        }
+
+        public IEnumerable<Gig> GetFutureGigs()
+        {
+            return _context.Gigs
+                .Where(g => g.DateTime > DateTime.Now
+                    && !g.IsCanceled)
+                .Include(g => g.Genre)
+                .ToList();
+        }
+
+
+        public IEnumerable<Gig> GetFutureGigsByArtist(string artistId)
+        {
+            return _context.Gigs
+                .Where(g => g.ArtistId == artistId
+                    && g.DateTime > DateTime.Now
+                    && !g.IsCanceled)
+                .Include(g => g.Genre)
+                .ToList();
+        }
+
+        public Gig GetGig(int id)
+        {
+            return _context.Gigs
+                .Include(g => g.Artist)
+                .Include(g => g.Genre)
+                .SingleOrDefault(g => g.Id == id);
         }
     }
 }
