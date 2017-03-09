@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using GigHub.Dtos;
-using GigHub.Models;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using GigHub.Core.Dtos;
+using GigHub.Core.Models;
 
 namespace GigHub
 {
