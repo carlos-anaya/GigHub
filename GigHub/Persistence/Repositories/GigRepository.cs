@@ -1,9 +1,9 @@
-﻿using System;
+﻿using GigHub.Core.Models;
+using GigHub.Core.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using GigHub.Core.Models;
-using GigHub.Core.Repositories;
 
 namespace GigHub.Persistence.Repositories
 {
@@ -19,11 +19,11 @@ namespace GigHub.Persistence.Repositories
         public IEnumerable<Gig> GetGigsUserAttending(string userId)
         {
             return _context.Attendances
-                            .Where(a => a.AttendeeId == userId)
-                            .Select(a => a.Gig)
-                            .Include(g => g.Artist)
-                            .Include(g => g.Genre)
-                            .ToList();
+                .Where(a => a.AttendeeId == userId)
+                .Select(a => a.Gig)
+                .Include(g => g.Artist)
+                .Include(g => g.Genre)
+                .ToList();
         }
 
         public Gig GetGigWithAttendees(int gigId)
@@ -39,9 +39,9 @@ namespace GigHub.Persistence.Repositories
                 .Where(g => g.DateTime > DateTime.Now
                     && !g.IsCanceled)
                 .Include(g => g.Genre)
+                .Include(g => g.Artist)
                 .ToList();
         }
-
 
         public IEnumerable<Gig> GetFutureGigsByArtist(string artistId)
         {
@@ -51,6 +51,19 @@ namespace GigHub.Persistence.Repositories
                     && !g.IsCanceled)
                 .Include(g => g.Genre)
                 .ToList();
+        }
+
+        public IEnumerable<Gig> SearchGigs(string query)
+        {
+            var upcomingGigs = GetFutureGigs();
+
+            if (!string.IsNullOrWhiteSpace(query))
+                upcomingGigs = upcomingGigs
+                    .Where(g => g.Artist.Name.Contains(query)
+                        || g.Venue.Contains(query)
+                        || g.Genre.Name.Contains(query));
+
+            return upcomingGigs;
         }
 
         public Gig GetGig(int id)
