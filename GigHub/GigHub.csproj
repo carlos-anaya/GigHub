@@ -232,6 +232,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Persistence\EntityConfigurations\ApplicationUserConfiguration.cs" />
+    <Compile Include="Persistence\EntityConfigurations\UserNotificationConfiguration.cs" />
+    <Compile Include="Persistence\EntityConfigurations\FollowingConfiguration.cs" />
+    <Compile Include="Persistence\EntityConfigurations\AttendanceConfiguration.cs" />
+    <Compile Include="Persistence\EntityConfigurations\GenreConfiguration.cs" />
+    <Compile Include="Persistence\EntityConfigurations\GigConfiguration.cs" />
     <Compile Include="Persistence\Migrations\201511102238077_InitialModel.cs" />
     <Compile Include="Persistence\Migrations\201511102238077_InitialModel.Designer.cs">
       <DependentUpon>201511102238077_InitialModel.cs</DependentUpon>
@@ -271,6 +277,10 @@
     <Compile Include="Persistence\Migrations\201702271709442_AddNotification.cs" />
     <Compile Include="Persistence\Migrations\201702271709442_AddNotification.Designer.cs">
       <DependentUpon>201702271709442_AddNotification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Persistence\Migrations\201703102203587_foo.cs" />
+    <Compile Include="Persistence\Migrations\201703102203587_foo.Designer.cs">
+      <DependentUpon>201703102203587_foo.cs</DependentUpon>
     </Compile>
     <Compile Include="Persistence\Migrations\Configuration.cs" />
     <Compile Include="Core\ViewModels\AccountViewModels.cs" />
@@ -429,6 +439,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Persistence\Migrations\201702271709442_AddNotification.resx">
       <DependentUpon>201702271709442_AddNotification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Persistence\Migrations\201703102203587_foo.resx">
+      <DependentUpon>201703102203587_foo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
