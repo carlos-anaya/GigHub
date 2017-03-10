@@ -6,5 +6,7 @@ namespace GigHub.Core.Repositories
     {
         Following GetFollowing(string followeeId, string followerId);
         bool IsFollowing(string followeeId, string followerId);
+        void Add(Following following);
+        void Remove(Following following);
     }
 }

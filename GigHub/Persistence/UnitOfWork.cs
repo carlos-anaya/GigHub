@@ -13,6 +13,8 @@ namespace GigHub.Persistence
         public IFollowingRepository Followings { get; }
         public IGigRepository Gigs { get; }
         public IGenreRepository Genres { get; }
+        public INotificationRepository Notifications { get; }
+        public IUserNotificationRepository UserNotifications { get; }
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -22,12 +24,15 @@ namespace GigHub.Persistence
             Followings = new FollowingRepository(context);
             Gigs = new GigRepository(context);
             Genres = new GenreRepository(context);
+            Notifications = new NotificationRepository(context);
+            UserNotifications = new UserNotificationRepository(context);
         }
 
         public void Complete()
         {
             _context.SaveChanges();
         }
+
 
     }
 }

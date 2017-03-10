@@ -43,8 +43,7 @@ namespace GigHub.Core.Models
             GenreId = genreId;
             Venue = venue;
 
-            foreach (var attendee in Attendances.Select(a => a.Attendee))
-                attendee.Notify(notification);
+            NotifyAtendees(notification);
         }
 
         public void Cancel()
@@ -53,6 +52,11 @@ namespace GigHub.Core.Models
 
             var notification = Notification.GigCanceled(this);
 
+            NotifyAtendees(notification);
+        }
+
+        private void NotifyAtendees(Notification notification)
+        {
             foreach (var attendee in Attendances.Select(a => a.Attendee))
                 attendee.Notify(notification);
         }

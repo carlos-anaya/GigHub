@@ -31,6 +31,10 @@ namespace GigHub.Persistence.Repositories
             return _context.Gigs
                 .Include(g => g.Attendances.Select(a => a.Attendee))
                 .SingleOrDefault(g => g.Id == gigId);
+
+            //_context.Gigs
+            //.Include(g => Enumerable.Select<Attendance, ApplicationUser>(g.Attendances, a => a.Attendee))
+            //.Single(g => g.Id == id && g.ArtistId == userId);
         }
 
         public IEnumerable<Gig> GetFutureGigs()

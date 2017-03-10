@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using GigHub.Core.Models;
+using System.Collections.Generic;
 
 namespace GigHub.Core.Repositories
 {
@@ -8,5 +8,7 @@ namespace GigHub.Core.Repositories
         IEnumerable<Attendance> GetFutureAttendances(string userId);
         Attendance GetAttendance(int gigId, string userId);
         bool IsAttending(int gigId, string userId);
+        void Add(Attendance attendance);
+        void Remove(Attendance attendance);
     }
 }
